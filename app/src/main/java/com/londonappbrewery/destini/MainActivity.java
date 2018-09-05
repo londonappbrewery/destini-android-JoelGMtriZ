@@ -1,5 +1,8 @@
 package com.londonappbrewery.destini;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonBottom;
     TextView storyTextView;
     int mStoryIndex = 0;
+    String gameOver = "Game Over. LoL!!!";
 
     private int[] mStoryBank = {
             R.string.T1_Story,
@@ -73,7 +77,23 @@ public class MainActivity extends AppCompatActivity {
         buttonBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mStoryIndex == 0) {
+
+                if (mStoryIndex > 2){
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                    alert.setTitle(gameOver);
+                    alert.setCancelable(false);
+                    alert.setMessage("You Have Completed The Game!!!");
+                    alert.setPositiveButton("Close Application", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    });
+                    alert.show();
+                }
+
+                else if (mStoryIndex == 0) {
                     updateStory(1);
                     updateButtons(1);
                 }
@@ -107,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
         else {
             buttonTop.setVisibility(View.GONE);
-            buttonBottom.setVisibility(View.GONE);
+            buttonBottom.setText(R.string.EndGame);
         }
     }
 
